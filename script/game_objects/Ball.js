@@ -58,14 +58,15 @@ var calculateBallVelocity = function(power, angle){
 }
 
 Ball.prototype.update = function(delta){
-
     this.updatePosition(delta);
 
-    this.velocity.multiplyWith(0.98);
+    this.velocity.multiplyWith(0.992); // Ou qualquer valor que você curtiu
 
-	if(this.moving && Math.abs(this.velocity.x) < 1 && Math.abs(this.velocity.y) < 1){
+    if(this.moving && Math.abs(this.velocity.x) < 0.01 && Math.abs(this.velocity.y) < 0.01){
         this.stop();
     }
+
+
 }
 
 Ball.prototype.updatePosition = function(delta){
@@ -84,7 +85,7 @@ Ball.prototype.updatePosition = function(delta){
         }
 		this.position = newPos;
         this.inHole = true;
-        setTimeout(function(){ball.visible=false;ball.velocity = Vector2.zero;}, 100);
+        setTimeout(function(){ball.visible=false;ball.velocity = Vector2.zero;}, 50);
         Game.policy.handleBallInHole(this);
 		return;
 	}
@@ -92,7 +93,7 @@ Ball.prototype.updatePosition = function(delta){
     var collision = this.handleCollision(newPos);
 
     if(collision){
-		this.velocity.multiplyWith(0.95);
+		this.velocity.multiplyWith(0.997);
     }else{
     	this.position = newPos;
     }
