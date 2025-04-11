@@ -53,16 +53,19 @@ Ball.prototype.shoot = function(power, angle){
 }
 
 var calculateBallVelocity = function(power, angle){
-
-    return new Vector2(100*Math.cos(angle)*power,100*Math.sin(angle)*power);
+    return new Vector2(
+        200 * Math.cos(angle) * power,
+        200 * Math.sin(angle) * power
+    );
 }
+
 
 Ball.prototype.update = function(delta){
     this.updatePosition(delta);
 
-    this.velocity.multiplyWith(0.992); // Ou qualquer valor que você curtiu
+    this.velocity.multiplyWith(0.98,90); // Ou qualquer valor que você curtiu
 
-    if(this.moving && Math.abs(this.velocity.x) < 0.01 && Math.abs(this.velocity.y) < 0.01){
+    if(this.moving && Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1){
         this.stop();
     }
 
