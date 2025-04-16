@@ -1,13 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-        <meta http-equiv="content-type" content="text/html; charset=UTF8">
+    <meta charset="UTF-8">
     <title>Classic Pool Game</title>
-    <link rel="stylesheet" type="text/css" href="css/game-layout.css"/>
-    <link rel="shortcut icon" type="image/png" href="assets/sprites/favicon.png"/>
+    <link rel="shortcut icon" type="image/png" href="assets/sprites/favicon.png">
+    <link rel="stylesheet" href="css/game-layout.css">
+    <style>
+        body {
+            margin: 0;
+            background-color: black;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 64px;
+            margin-bottom: 20px;
+            color: #FFD700;
+            text-shadow: 3px 3px 8px #000;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700; }
+            to   { text-shadow: 0 0 20px #FFD700, 0 0 40px #FFD700; }
+        }
+
+        .logo {
+            width: 200px;
+            animation: pulse 2s infinite alternate;
+            margin-bottom: 20px;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); opacity: 0.9; }
+            to   { transform: scale(1.05); opacity: 1; }
+        }
+
+        .start-button {
+            padding: 15px 40px;
+            font-size: 24px;
+            background-color: #FFD700;
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 0 10px #FFD700;
+            transition: 0.3s;
+        }
+
+        .start-button:hover {
+            background-color: #FFC300;
+            transform: scale(1.05);
+        }
+
+        .credits {
+            position: absolute;
+            bottom: 20px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        #gameArea {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+    </style>
+</head>
+<body>
+    <img src="assets/sprites/minha-logo.png" alt="Logo" class="logo">
+    <h1>Classic Pool Game</h1>
+    <button class="start-button" onclick="startGame()">Jogar</button>
+    <div class="credits">Desenvolvido por Gabriel</div>
+
+    <div id="gameArea">
+        <canvas id="screen" width="2000" height="1000"></canvas>
+    </div>
+
+    <audio id="menuMusic" src="assets/sounds/Bossa Antigua.mp3" autoplay loop></audio>
+
     <script src="script/lib/LAB.min.js"></script>
     <script>
-        $LAB
+        function startGame() {
+            // Fade-out dos elementos
+            document.querySelector('h1').style.display = 'none';
+            document.querySelector('.start-button').style.display = 'none';
+            document.querySelector('.credits').style.display = 'none';
+            document.querySelector('.logo').style.display = 'none';
+
+            // Parar música do menu
+            var menuMusic = document.getElementById('menuMusic');
+            menuMusic.pause();
+
+            // Fade-in no canvas
+            const gameArea = document.getElementById('gameArea');
+            gameArea.style.display = 'block';
+            setTimeout(() => {
+                gameArea.style.opacity = '1';
+            }, 50);
+
+            // Carregar scripts e iniciar jogo
+            $LAB
                 .script('script/system/Keys.js').wait()
                 .script('script/system/Color.js').wait()
                 .script('script/geom/Vector2.js').wait()
@@ -33,13 +133,7 @@
                 .script('script/Assets.js').wait(function () {
                     Game.start('gameArea','screen', 1500, 825);
                 });
-
+        }
     </script>
-</head>
-
-<body style = "background-color:black">
-<div id="gameArea">
-    <canvas id="screen" width="2000" height="1000"></canvas>
-</div>
 </body>
 </html>
