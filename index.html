@@ -1,139 +1,235 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Classic Pool Game</title>
-    <link rel="shortcut icon" type="image/png" href="assets/sprites/favicon.png">
-    <link rel="stylesheet" href="css/game-layout.css">
-    <style>
-        body {
-            margin: 0;
-            background-color: black;
-            color: white;
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        h1 {
-            font-size: 64px;
-            margin-bottom: 20px;
-            color: #FFD700;
-            text-shadow: 3px 3px 8px #000;
-            animation: glow 2s infinite alternate;
-        }
-
-        @keyframes glow {
-            from { text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700; }
-            to   { text-shadow: 0 0 20px #FFD700, 0 0 40px #FFD700; }
-        }
-
-        .logo {
-            width: 200px;
-            animation: pulse 2s infinite alternate;
-            margin-bottom: 20px;
-        }
-
-        @keyframes pulse {
-            from { transform: scale(1); opacity: 0.9; }
-            to   { transform: scale(1.05); opacity: 1; }
-        }
-
-        .start-button {
-            padding: 15px 40px;
-            font-size: 24px;
-            background-color: #FFD700;
-            color: #000;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            box-shadow: 0 0 10px #FFD700;
-            transition: 0.3s;
-        }
-
-        .start-button:hover {
-            background-color: #FFC300;
-            transform: scale(1.05);
-        }
-
-        .credits {
-            position: absolute;
-            bottom: 20px;
-            font-size: 14px;
-            color: #888;
-        }
-
-        #gameArea {
-            display: none;
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Classic Pool Game</title>
+  <link rel="shortcut icon" type="image/png" href="assets/sprites/favicon.png">
+  <link rel="stylesheet" href="css/game-layout.css">
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      color: white;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 64px;
+      margin-bottom: 20px;
+      color: #FFD700;
+      text-shadow: 3px 3px 8px #000;
+      animation: glow 2s infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700; }
+      to   { text-shadow: 0 0 20px #FFD700, 0 0 40px #FFD700; }
+    }
+    .logo {
+      width: 200px;
+      animation: pulse 2s infinite alternate;
+      margin-bottom: 20px;
+    }
+    @keyframes pulse {
+      from { transform: scale(1); opacity: 0.9; }
+      to   { transform: scale(1.05); opacity: 1; }
+    }
+    .start-button {
+      padding: 15px 40px;
+      font-size: 24px;
+      background-color: #FFD700;
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #FFD700;
+      transition: 0.3s;
+      margin: 10px;
+    }
+    .start-button:hover {
+      background-color: #FFC300;
+      transform: scale(1.05);
+    }
+    .credits {
+      position: absolute;
+      bottom: 20px;
+      font-size: 14px;
+      color: #888;
+    }
+    #gameArea {
+      display: none;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    #welcomeMessage {
+      font-size: 48px;
+      color: #FFD700;
+      text-shadow: 0 0 20px #FFD700;
+      display: none;
+      animation: fadeInOut 5s ease forwards;
+    }
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.05); }
+      100% { opacity: 0; transform: scale(1.2); }
+    }
+    #nameInput {
+      font-size: 24px;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: none;
+      text-align: center;
+    }
+    #loadingScreen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      z-index: 10;
+    }
+    #loadingScreen img {
+      width: 200px;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite alternate;
+    }
+    #loadingText {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #FFD700;
+    }
+    .loading-bar {
+      width: 300px;
+      height: 20px;
+      background: #333;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .loading-bar-inner {
+      height: 100%;
+      width: 0%;
+      background: #FFD700;
+      animation: loadBar 3s linear forwards;
+    }
+    @keyframes loadBar {
+      to { width: 100%; }
+    }
+  </style>
 </head>
+
 <body>
-    <img src="assets/sprites/minha-logo.png" alt="Logo" class="logo">
-    <h1>Classic Pool Game</h1>
-    <button class="start-button" onclick="startGame()">Jogar</button>
-    <div class="credits">Desenvolvido por Gabriel</div>
+  <img src="assets/sprites/minha-logo.png" alt="Logo" class="logo">
+  <h1>Classic Pool Game</h1>
 
-    <div id="gameArea">
-        <canvas id="screen" width="2000" height="1000"></canvas>
+  <input type="text" id="nameInput" placeholder="Digite seu nome" />
+  <button class="start-button" onclick="startGame()">🎱 Começar a Partida!</button>
+
+  <div class="credits">Desenvolvido por Gabriel</div>
+
+  <div id="welcomeMessage"></div>
+
+  <div id="loadingScreen">
+    <img src="assets/sprites/minha-logo.png" alt="Logo carregamento">
+    <div id="loadingText">Preparando sua mesa…</div>
+    <div class="loading-bar">
+      <div class="loading-bar-inner"></div>
     </div>
+  </div>
 
-    <audio id="menuMusic" src="assets/sounds/Bossa Antigua.mp3" autoplay loop></audio>
+  <div id="gameArea">
+    <canvas id="screen" width="2000" height="1000"></canvas>
+  </div>
 
-    <script src="script/lib/LAB.min.js"></script>
-    <script>
-        function startGame() {
-            // Fade-out dos elementos
-            document.querySelector('h1').style.display = 'none';
-            document.querySelector('.start-button').style.display = 'none';
-            document.querySelector('.credits').style.display = 'none';
-            document.querySelector('.logo').style.display = 'none';
+  <audio id="menuMusic" src="assets/sounds/Bossa Antigua.mp3" autoplay loop></audio>
+  <audio id="startSound" src="assets/sounds/start.mp3"></audio>
 
-            // Parar música do menu
-            var menuMusic = document.getElementById('menuMusic');
-            menuMusic.pause();
+  <script src="script/lib/LAB.min.js"></script>
+  <script>
+    let playerName = '';
 
-            // Fade-in no canvas
-            const gameArea = document.getElementById('gameArea');
-            gameArea.style.display = 'block';
-            setTimeout(() => {
-                gameArea.style.opacity = '1';
-            }, 50);
+    function startGame() {
+      playerName = document.getElementById('nameInput').value;
+      if (!playerName) {
+        alert('Por favor, digite seu nome!');
+        return;
+      }
 
-            // Carregar scripts e iniciar jogo
-            $LAB
-                .script('script/system/Keys.js').wait()
-                .script('script/system/Color.js').wait()
-                .script('script/geom/Vector2.js').wait()
-                .script('script/input/ButtonState.js').wait()
-                .script('script/input/Keyboard.js').wait()
-                .script('script/input/Mouse.js').wait()
-                .script('script/Global.js').wait()
-                .script('script/Canvas2D.js').wait()
-                .script('script/game_objects/Score.js').wait()
-                .script('script/game_objects/Ball.js').wait()
-                .script('script/game_objects/Stick.js').wait()
-                .script('script/menu/Label.js').wait()
-                .script('script/menu/Button.js').wait()
-                .script('script/menu/Menu.js').wait()
-                .script('script/menu/MainMenu.js').wait()
-                .script('script/AI/Opponent.js').wait()
-                .script('script/AI/AIPolicy.js').wait()
-                .script('script/AI/AITrainer.js').wait()
-                .script('script/game_objects/Player.js').wait()
-                .script('script/GamePolicy.js').wait()
-                .script('script/GameWorld.js').wait()
-                .script('script/Game.js').wait()
-                .script('script/Assets.js').wait(function () {
-                    Game.start('gameArea','screen', 1500, 825);
-                });
-        }
-    </script>
+      document.querySelector('h1').style.display = 'none';
+      document.querySelector('.start-button').style.display = 'none';
+      document.querySelector('.credits').style.display = 'none';
+      document.querySelector('.logo').style.display = 'none';
+      document.querySelector('#nameInput').style.display = 'none';
+
+      var menuMusic = document.getElementById('menuMusic');
+      menuMusic.pause();
+
+      document.getElementById('welcomeMessage').innerHTML = `Bem-vindo ao Jogo de Sinuca, ${playerName}! 🎱`;
+      document.getElementById('welcomeMessage').style.display = 'block';
+
+      setTimeout(() => {
+        document.getElementById('welcomeMessage').style.display = 'none';
+        showLoadingScreen();
+      }, 5000);
+    }
+
+    function showLoadingScreen() {
+      const startSound = document.getElementById('startSound');
+      startSound.play();
+
+      const loadingScreen = document.getElementById('loadingScreen');
+      document.getElementById('loadingText').innerText = `Preparando sua mesa, ${playerName}…`;
+      loadingScreen.style.display = 'flex';
+
+      setTimeout(() => {
+        loadingScreen.style.display = 'none';
+        startGameArea();
+      }, 3000);
+    }
+
+    function startGameArea() {
+      const gameArea = document.getElementById('gameArea');
+      gameArea.style.display = 'block';
+      setTimeout(() => {
+        gameArea.style.opacity = '1';
+      }, 50);
+
+      $LAB
+        .script('script/system/Keys.js').wait()
+        .script('script/system/Color.js').wait()
+        .script('script/geom/Vector2.js').wait()
+        .script('script/input/ButtonState.js').wait()
+        .script('script/input/Keyboard.js').wait()
+        .script('script/input/Mouse.js').wait()
+        .script('script/Global.js').wait()
+        .script('script/Canvas2D.js').wait()
+        .script('script/game_objects/Score.js').wait()
+        .script('script/game_objects/Ball.js').wait()
+        .script('script/game_objects/Stick.js').wait()
+        .script('script/menu/Label.js').wait()
+        .script('script/menu/Button.js').wait()
+        .script('script/menu/Menu.js').wait()
+        .script('script/menu/MainMenu.js').wait()
+        .script('script/AI/Opponent.js').wait()
+        .script('script/AI/AIPolicy.js').wait()
+        .script('script/AI/AITrainer.js').wait()
+        .script('script/game_objects/Player.js').wait()
+        .script('script/GamePolicy.js').wait()
+        .script('script/GameWorld.js').wait()
+        .script('script/Game.js').wait()
+        .script('script/Assets.js').wait(function () {
+          Game.start('gameArea', 'screen', 1500, 825);
+        });
+    }
+  </script>
 </body>
 </html>
